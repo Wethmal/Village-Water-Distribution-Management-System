@@ -1,0 +1,25 @@
+const distributeResources = (villages, setVillages, logAction) => {
+  const executePush = (fromId, toId) => {
+    const fromV = villages[fromId];
+    const toV = villages[toId];
+
+    const surplus = fromV.supply - fromV.demand;
+    const shortage = toV.demand - toV.supply;
+
+    // Constraint Checks
+    if (surplus <= 0) return alert("Source has no surplus!");
+    if (shortage <= 0) return alert("Target is already satisfied!");
+
+    const transfer = Math.min(surplus, shortage);
+
+    setVillages(prev => ({
+      ...prev,
+      [fromId]: { ...fromV, supply: fromV.supply - transfer },
+      [toId]: { ...toV, supply: toV.supply + transfer }
+    }));
+
+    logAction(⁠ FLOW: Transferred ${transfer}L to ${toV.name} ⁠);
+  };
+
+  return { executePush };
+};
