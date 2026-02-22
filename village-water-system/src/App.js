@@ -6,6 +6,7 @@ class LogNode {
     this.action = action;
     this.time = new Date().toLocaleTimeString();
     this.next = null; // Pointer to next node
+    this.prev = null; // Pointer to previous node (for potential future use)
   }
 }
 
@@ -36,10 +37,13 @@ export default function App() {
 
   // Linked List(Insert at Head)
   const logAction = (action) => {
-    const newNode = new LogNode(action);
-    newNode.next = historyHead; // New node points to old head
-    setHistoryHead(newNode);    // Update head to new node
-  };
+  const newNode = new LogNode(action);
+  if (historyHead) {
+    newNode.next = historyHead;
+    historyHead.prev = newNode; 
+  }
+  setHistoryHead(newNode); 
+};
 
   // Convert Linked List to Array for Rendering
   const getHistoryList = () => {
